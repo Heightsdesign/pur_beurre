@@ -1,5 +1,6 @@
 import requests
 
+
 class Get_data:
 
     def __init__(self, url, params):
@@ -10,6 +11,15 @@ class Get_data:
         self.data = response.json()
 
 
+    def clean(self):
+
+        cleanproducts = []
+        rawproducts = self.data["products"]
+        for product in rawproducts:
+            cleanproducts.append(product["product_name_fr"], product["ingredients_text_fr"])
+        return cleanproducts
+
+
 param1 = Get_data("https://fr.openfoodfacts.org/cgi/search.pl", {
             "action" : "process",
             "sort_by" : "unique_scans_n",
@@ -18,8 +28,6 @@ param1 = Get_data("https://fr.openfoodfacts.org/cgi/search.pl", {
             "json" : 1
         })
 
-products = param1.data["products"]
-
-first_product = products[1]
-print(first_product["product_name_fr"])
+clprod = param1.clean()
+print(clprod)
 
