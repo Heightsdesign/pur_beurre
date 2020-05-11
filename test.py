@@ -1,5 +1,14 @@
 import requests
+import mysql.connector
 
+db_pur_beurre = mysql.connector.connect(
+    host = 'localhost',
+    user = 'root',
+    passwd = 'Eugenia06240'
+    database = 'pur_beurre'
+)
+
+dbcusor = db_pur_beurre.cursor()
 
 class Get_data:
 
@@ -17,12 +26,13 @@ class Get_data:
         rawproducts = self.data["products"]
         for product in rawproducts:
             cleanproducts.append([
-                product["code"], 
+                {product["code"] : [
                 product["product_name_fr"], 
                 product["nutrition_grade_fr"].upper(), 
                 product["ingredients_text_fr"],
                 product["url"],
-                product["stores"]
+                product["categories"],
+                product["stores"]]}
                 ])
         return cleanproducts
 
@@ -36,5 +46,8 @@ parametre_1 = Get_data("https://fr.openfoodfacts.org/cgi/search.pl", {
         })
 
 cleaned_products = parametre_1.clean()
-print(cleaned_products)
+
+
+"""print(cleaned_products)"""
+print(db_pur_beurre)
 
