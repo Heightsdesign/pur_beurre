@@ -16,11 +16,18 @@ class Get_data:
         cleanproducts = []
         rawproducts = self.data["products"]
         for product in rawproducts:
-            cleanproducts.append(product["product_name_fr"], product["ingredients_text_fr"])
+            cleanproducts.append([
+                product["code"], 
+                product["product_name_fr"], 
+                product["nutrition_grade_fr"].upper(), 
+                product["ingredients_text_fr"],
+                product["url"],
+                product["stores"]
+                ])
         return cleanproducts
 
 
-param1 = Get_data("https://fr.openfoodfacts.org/cgi/search.pl", {
+parametre_1 = Get_data("https://fr.openfoodfacts.org/cgi/search.pl", {
             "action" : "process",
             "sort_by" : "unique_scans_n",
             "page" : 1,
@@ -28,6 +35,6 @@ param1 = Get_data("https://fr.openfoodfacts.org/cgi/search.pl", {
             "json" : 1
         })
 
-clprod = param1.clean()
-print(clprod)
+cleaned_products = parametre_1.clean()
+print(cleaned_products)
 
