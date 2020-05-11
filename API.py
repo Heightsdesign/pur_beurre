@@ -17,13 +17,13 @@ class Get_data:
         rawproducts = self.data["products"]
         for product in rawproducts:
             cleanproducts.append([
-                {product["code"] : [
+                product["code"],
                 product["product_name_fr"], 
                 product["nutrition_grade_fr"].upper(), 
                 product["ingredients_text_fr"],
+                product["stores"],
                 product["url"],
-                product["categories"],
-                product["stores"]]}
+                product["categories"]
                 ])
         return cleanproducts
 
@@ -40,5 +40,4 @@ cleaned_products = parametre_1.clean()
 
 
 """print(cleaned_products)"""
-print(db_pur_beurre)
 
