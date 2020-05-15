@@ -9,16 +9,21 @@ class Product:
 
     def __init__(self, id, name, nutriscore, ingredients, stores, url, categories):
 
-        self.id = "code"
-        self.name = "product_name_fr"
-        self.nutriscore = "nutrition_grade_fr"
-        self.ingredients = "ingredients_text_fr"
-        self.stores = "stores"
-        self.url = "url"
-        self.categories = "categories"
+        self.id = id
+        self.name = name
+        self.nutriscore = nutriscore
+        self.ingredients = ingredients
+        self.stores = stores
+        self.url = url
+        self.categories = categories
 
+#list of product objects
 products = [Product(id, name, nutriscore, ingredients, stores, url, categories) for id, name, nutriscore, ingredients, stores, url, categories in cleaned_products ]
-print (products[0])
+
+
+print (products[0].nutriscore)
+
+
 """class ProductManager:
 
    def get_product(self):
