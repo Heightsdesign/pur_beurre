@@ -38,6 +38,8 @@ parametre_1 = Get_data("https://fr.openfoodfacts.org/cgi/search.pl", {
 
 cleaned_products = parametre_1.clean()
 
+"""print(cleaned_products[0])"""
 
-"""print(cleaned_products)"""
 
+        
+        

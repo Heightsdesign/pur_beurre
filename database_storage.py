@@ -1,15 +1,8 @@
 import mysql.connector
 from API import cleaned_products
+from mysql_connector import db_pur_beurre
+from mysql_connector import dbcursor
 
-
-db_pur_beurre = mysql.connector.connect(
-    host = 'localhost',
-    user = 'root',
-    passwd = 'Eugenia06240',
-    database = 'pur_beurre'
-)
-
-dbcursor = db_pur_beurre.cursor()
 
 class Product_storage:
 
@@ -24,5 +17,5 @@ class Product_storage:
        db_pur_beurre.commit()
 
 
-Product_storage(cleaned_products).save()
+"""Product_storage(cleaned_products).save()"""
 
