@@ -17,11 +17,13 @@ class Product:
         self.url = "url"
         self.categories = "categories"
 
-class ProductManager:
+products = [Product(id, name, nutriscore, ingredients, stores, url, categories) for id, name, nutriscore, ingredients, stores, url, categories in cleaned_products ]
+print (products[0])
+"""class ProductManager:
 
-   """ def get_product(self):
+   def get_product(self):
 
-        for i, data in enumerate (cleaned_products):"""
+        for i, data in enumerate (cleaned_products):
 
     def save(self, product):
         
@@ -29,7 +31,7 @@ class ProductManager:
 
         save_formula = "INSERT INTO product (id, name, nutrition_grade, ingredients, stores, url, categories) VALUES (%s, %s, %s, %s, %s, %s, %s)"
         dbcursor.execute(save_formula, self.product)
-        db_pur_beurre.commit() 
+        db_pur_beurre.commit() """
 
 
 
