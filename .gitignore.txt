@@ -1,1 +1,4 @@
+# .gitignore ne sert à rien. C'est .gitignore (sans le .txt)
 project_env/
+# Le __pycache__/ doit aussi être dans ton .gitignore et tu ne veux pas les 
+# envoyer sur github
