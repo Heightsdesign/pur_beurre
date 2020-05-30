@@ -1,5 +1,5 @@
-from API import Get_data
-from API import cleaned_products
+from API import ProductDownloader
+from API import clean_prod
 from mysql_connector import db_pur_beurre
 from mysql_connector import dbcursor
 
@@ -17,31 +17,49 @@ class Product:
         self.url = url
         self.categories = categories
 
-#list of product objects
-products = [Product(id, name, nutriscore, ingredients, stores, url, categories) for id, name, nutriscore, ingredients, stores, url, categories in cleaned_products ]
+class ProductManager: 
 
-
-print (products[0].nutriscore)
-
-
-"""class ProductManager:
-
-   def get_product(self):
-
-        for i, data in enumerate (cleaned_products):
-
-    def save(self, product):
+    def list_products(self):
+        pass
+        products_data = ProductDownloader().response()
         
-        self.product = product
-
-        save_formula = "INSERT INTO product (id, name, nutrition_grade, ingredients, stores, url, categories) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-        dbcursor.execute(save_formula, self.product)
-        db_pur_beurre.commit() """
 
 
+#list of product objects
+products = [Product(id, name, nutriscore, ingredients, stores, url, categories) for id, name, nutriscore, ingredients, stores, url, categories in clean_prod ]
 
-"""class Category:
+#list of categories
+products_categories = [Product.categories for Product in products]
+
+#splitting the categories 
+categories_names = [category for index in products_categories for category in index.split(',')]
+
+#creating an id for each category
+def add_id():
+    ids = []
+    for i in range(0, len(categories_names)):
+        i += 1
+        ids.append(i)
+    return ids
+
+# zipping the the ids with the names of the categories in a dictionnary
+categories = {id : name for id, name in zip (add_id(), categories_names)}
+
+
+""""Create an object Category with an id and a name as attributes"""
+class Category:
     pass
-    def __init__(self, category):
+    def __init__(self, id, name):
 
-        self.category = category"""
+        self.id = id
+        self.name = name
+
+
+#products_categories_instances = 
+#cat_names = [Category.name for Category in products_categories_instances]
+print(categories)
+
+
+
+
+

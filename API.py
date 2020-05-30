@@ -1,18 +1,62 @@
 import requests
 
+"""imports products from api"""
+class ProductDownloader:
+     
+    url = "https://fr.openfoodfacts.org/cgi/search.pl"
+    params = {
+        "action" : "process",
+        "sort_by" : "unique_scans_n",
+        "page" : 1,
+        "page_size" : 20,
+        "json" : 1
+        }
 
-class Get_data:
+    @classmethod
+    def get_products_by_category(cls, category):
+        
+        cls.category = category
+        cls.params.update(
+            {
+            "action" : "process",
+            "sort_by" : "unique_scans_n",
+            "page" : 1,
+            "page_size" : 20,
+            "json" : 1,
+            "tagtype_0": "categories",
+            "tag_contains_0": "contains",
+            "tag_0": cls.category
+            }
+            )
+        return cls()
 
-    def __init__(self, url, params):
 
-        self.url = url
-        self.params = params
-        response = requests.get(self.url, params=self.params)
+    def request(self):
+
+        return requests.get(self.url, params=self.params)
+
+    def response(self):
+
+        response = self.request()
         self.data = response.json()
+        return self.data
+
+    def get_products_data(self):
+   
+        products_data = self.data["products"]
+        return products_data
 
 
-    def clean(self):
 
+class ProductParser:
+
+    def __init__(self, parameter):
+
+        self.parameter = parameter
+        self.data = ProductDownloader().response()
+
+    def parser(self):
+         
         cleanproducts = []
         rawproducts = self.data["products"]
         for product in rawproducts:
@@ -27,19 +71,10 @@ class Get_data:
                 ])
         return cleanproducts
 
+param_1 = ProductDownloader().response()
+clean_prod = ProductParser(param_1).parser()
 
-parametre_1 = Get_data("https://fr.openfoodfacts.org/cgi/search.pl", {
-            "action" : "process",
-            "sort_by" : "unique_scans_n",
-            "page" : 1,
-            "page_size" : 20,
-            "json" : 1
-        })
+param_2 = ProductDownloader().get_products_by_category("pizza").response()
+clean_prod_by_cat = ProductParser(param_2).parser()
 
-cleaned_products = parametre_1.clean()
-
-"""print(cleaned_products[0])"""
-
-
-        
-        
+#print(clean_prod_by_cat)
