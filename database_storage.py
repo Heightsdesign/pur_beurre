@@ -4,6 +4,7 @@ from mysql_connector import db_pur_beurre
 from mysql_connector import dbcursor
 
 
+# -tc- attention nom invalide
 class Product_storage:
 
     def __init__(self, data):
@@ -11,7 +12,7 @@ class Product_storage:
         self.data = data
 
     def save(self):
-
+       # -tc- pourquoi passer les données en arguments de init? Categories et stores ne vont pas dans products
        save_formula = "INSERT INTO product (id, name, nutrition_grade, ingredients, url, categories, stores) VALUES (%s, %s, %s, %s, %s, %s, %s)" 
        dbcursor.executemany(save_formula, self.data)
        db_pur_beurre.commit()
