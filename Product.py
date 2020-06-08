@@ -1,20 +1,108 @@
-from API import ProductDownloader
+"""This file uses the data collected from the api file and creates and object Product from it and adds the object in a list"""
 
+from api import ProductDownloader
+from mysql_connector import db_pur_beurre
+from mysql_connector import dbcursor
+
+"""Creating Product object"""
 class Product:
 
-    def __init__(self, code, name, nutriscore, ingredients, url):
+    #initializes the object with attributes passed as arguments
+    def __init__(self, id, name, nutriscore, ingredients, stores, url, categories):
 
-        self.code = code
+        self.id = id
         self.name = name
-        self.nutrisocre = nutriscors
+        self.nutriscore = nutriscore
         self.ingredients = ingredients
+        self.stores = stores
         self.url = url
+        self.categories = categories
 
-    def list_products(self):
 
-        a_list_to_turn = ProductDownloader().get_products_data()
-        products = [Product(code, name, nutriscore, ingredients, url) for code, product_name_fr, nutrition_grade_fr, ingredients_text_fr, url in clean_prod ]
-        return products
+"""Iterates through the data and creates objects from of it and adds them to a list"""
+class ProductParser: 
 
-product_list = Product(code, name, nutriscore, ingredients, url).list_products()
-print(product_list)
+    #initializes object ProductParser, the parameters passed as an argument are determined in the ProductDownloader class
+    def __init__(self, parameter):
+
+        self.parameter = parameter
+        self.data = ProductDownloader().response()
+
+    #verifies if products attributes are valid
+    def is_valid(self, prod): 
+
+        self.prod = prod
+
+        #keys = attributes considered necessary to add a product to our list
+        keys = ("code", "product_name_fr", "nutrition_grade_fr", "categories")
+        for key in keys:
+            #checking if the attributes or their value exists
+            if key not in prod or not prod[key]:
+                return False
+        return True
+
+    """Iterates through data, creates object from it and adds them to a list"""
+    def parser(self):
+
+        products = self.data["products"]
+        obj_list = []
+        for prod in products:
+            if self.is_valid(prod):
+                product = Product(
+                    prod["code"], 
+                    prod["product_name_fr"], 
+                    prod["nutrition_grade_fr"], 
+                    prod["ingredients_text_fr"], 
+                    prod["stores"], 
+                    prod["url"], 
+                    prod["categories"])
+            obj_list.append(product)
+        return obj_list
+
+
+param_1 = ProductDownloader().response()
+productlist = ProductParser(param_1).parser()
+
+print(productlist)
+
+
+
+
+"""#list of product objects
+products = [Product(id, name, nutriscore, ingredients, stores, url, categories) for id, name, nutriscore, ingredients, stores, url, categories in clean_prod ]
+
+#list of categories
+products_categories = [Product.categories for Product in products]
+
+#splitting the categories 
+categories_names = [category for index in products_categories for category in index.split(',')]"""
+
+#creating an id for each category
+"""def add_id():
+    ids = []
+    for i in range(0, len(categories_names)):
+        i += 1
+        ids.append(i)
+    return ids"""
+
+# zipping the the ids with the names of the categories in a dictionnary
+#categories = {id : name for id, name in zip (add_id(), categories_names)}
+
+
+""""Create an object Category with an id and a name as attributes"""
+"""class Category:
+    pass
+    def __init__(self, id, name):
+
+        self.id = id
+        self.name = name
+
+
+#products_categories_instances = 
+#cat_names = [Category.name for Category in products_categories_instances]
+#print(products)"""
+
+
+
+
+

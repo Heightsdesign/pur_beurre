@@ -1,3 +1,5 @@
+"""This file is used to contact the api and download data from it"""
+
 import requests
 
 """imports products from api"""
@@ -8,10 +10,11 @@ class ProductDownloader:
         "action" : "process",
         "sort_by" : "unique_scans_n",
         "page" : 1,
-        "page_size" : 20,
+        "page_size" : 100,
         "json" : 1
         }
 
+    """This class method will use our Productdownloader class and update the category we want, passed as and argument"""
     @classmethod
     def get_products_by_category(cls, category):
         
@@ -30,51 +33,16 @@ class ProductDownloader:
             )
         return cls()
 
-
+    #sends request to API
     def request(self):
 
         return requests.get(self.url, params=self.params)
 
+    #stores response from API in a json format
     def response(self):
-
+        
         response = self.request()
         self.data = response.json()
         return self.data
 
-    def get_products_data(self):
-   
-        products_data = self.data["products"]
-        return products_data
 
-
-
-class ProductParser:
-
-    def __init__(self, parameter):
-
-        self.parameter = parameter
-        self.data = ProductDownloader().response()
-
-    def parser(self):
-         
-        cleanproducts = []
-        rawproducts = self.data["products"]
-        for product in rawproducts:
-            cleanproducts.append([
-                product["code"],
-                product["product_name_fr"], 
-                product["nutrition_grade_fr"].upper(), 
-                product["ingredients_text_fr"],
-                product["stores"],
-                product["url"],
-                product["categories"]
-                ])
-        return cleanproducts
-
-param_1 = ProductDownloader().response()
-clean_prod = ProductParser(param_1).parser()
-
-param_2 = ProductDownloader().get_products_by_category("pizza").response()
-clean_prod_by_cat = ProductParser(param_2).parser()
-
-#print(clean_prod_by_cat)
