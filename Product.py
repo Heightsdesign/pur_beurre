@@ -67,7 +67,6 @@ print(productlist)
 
 
 
-
 class ProductManager:
 
     def save(self):
@@ -76,36 +75,13 @@ class ProductManager:
 
 products = [Product(id, name, nutriscore, ingredients, stores, url, categories) for id, name, nutriscore, ingredients, stores, url, categories in productlist ]
 
-"""#list of categories
-products_categories = [Product.categories for Product in products]
 
 #splitting the categories 
 categories_names = [category for index in products_categories for category in index.split(',')]"""
 
-#creating an id for each category
-"""def add_id():
-    ids = []
-    for i in range(0, len(categories_names)):
-        i += 1
-        ids.append(i)
-    return ids"""
-
-# zipping the the ids with the names of the categories in a dictionnary
-#categories = {id : name for id, name in zip (add_id(), categories_names)}
 
 
-""""Create an object Category with an id and a name as attributes"""
-"""class Category:
-    pass
-    def __init__(self, id, name):
 
-        self.id = id
-        self.name = name
-
-
-#products_categories_instances = 
-#cat_names = [Category.name for Category in products_categories_instances]
-#print(products)"""
 
 
 
