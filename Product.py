@@ -68,10 +68,15 @@ print(productlist)
 
 
 
-"""#list of product objects
-products = [Product(id, name, nutriscore, ingredients, stores, url, categories) for id, name, nutriscore, ingredients, stores, url, categories in clean_prod ]
+class ProductManager:
 
-#list of categories
+    def save(self):
+        pass
+
+
+products = [Product(id, name, nutriscore, ingredients, stores, url, categories) for id, name, nutriscore, ingredients, stores, url, categories in productlist ]
+
+"""#list of categories
 products_categories = [Product.categories for Product in products]
 
 #splitting the categories 
