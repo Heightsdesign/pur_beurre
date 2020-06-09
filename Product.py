@@ -73,17 +73,4 @@ class ProductManager:
         pass
 
 
-products = [Product(id, name, nutriscore, ingredients, stores, url, categories) for id, name, nutriscore, ingredients, stores, url, categories in productlist ]
-
-
-#splitting the categories 
-categories_names = [category for index in products_categories for category in index.split(',')]"""
-
-
-
-
-
-
-
-
-
+products = [Product(id, name, nutriscore, ingredients, stores, url, categories) for id, name, nutriscore, ingredients, stores, url, categories in productlist]

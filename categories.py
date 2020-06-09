@@ -1,6 +1,6 @@
 """This file contains everything related to the categories"""
 
-import product
+from product import productlist
 
 
 
@@ -15,5 +15,5 @@ class Category:
     #get the names for the categories
     def get_names(self):
 
-        categories_names = [Product.categories for Product in products]
+        categories_names = [Product.categories for Product in productlist]
 
