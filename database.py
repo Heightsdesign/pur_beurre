@@ -37,13 +37,13 @@ def main_database():
      database = Database("CREATE DATABASE IF NOT EXISTS pur_beurre CHARACTER SET 'utf8';")
      database.databasecreator()
 
-     product_table_attrs = "id BIGINT UNSIGNED NOT NULL, name VARCHAR(100) NOT NULL, nutriscore CHAR(1) NOT NULL, ingredients TEXT, PRIMARY KEY(id) "
-     product_table = Table("Product", product_table_attrs)
-     product_table.create_table()
+     products_table_attrs = "id BIGINT UNSIGNED NOT NULL, name VARCHAR(100) NOT NULL, nutriscore CHAR(1) NOT NULL, ingredients TEXT, url TINYTEXT, PRIMARY KEY(id) "
+     products_table = Table("Products", products_table_attrs)
+     products_table.create_table()
 
-     product_categories_table_attrs = "id_product BIGINT UNSIGNED NOT NULL, id_category SMALLINT UNSIGNED NOT NULL"
-     product_categories_table = Table("Product-Category", product_categories_table_attrs)
-     product_categories_table.create_table()
+     products_categories_table_attrs = "id_product BIGINT UNSIGNED NOT NULL, id_category SMALLINT UNSIGNED NOT NULL"
+     products_categories_table = Table("Products-Categories", products_categories_table_attrs)
+     products_categories_table.create_table()
 
      categories_table_attrs = "id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT, name VARCHAR(100)"
      categories_table = Table("Categories", categories_table_attrs)

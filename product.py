@@ -63,14 +63,16 @@ class ProductParser:
 param_1 = ProductDownloader().response()
 productlist = ProductParser(param_1).parser()
 
-print(productlist)
+"""for product in productlist:
+    print(product.id)"""
 
 
 
 class ProductManager:
 
     def save(self):
-        pass
-
-
-products = [Product(id, name, nutriscore, ingredients, stores, url, categories) for id, name, nutriscore, ingredients, stores, url, categories in productlist]
+        
+        #products = [Product(id, name, nutriscore, ingredients, stores, url, categories) for id, name, nutriscore, ingredients, stores, url, categories in productlist]
+        dbcursor.execute("USE pur_beurre;")
+        for product in productlist:
+            dbcursor.execute("INSERT into Products(id, name, nutriscore, ingredients, url) VALUES({},{},{},{},{})".format(product.id, product.name, product.nutriscore, product.ingredients, product.url))
