@@ -4,19 +4,21 @@ from mysql_connector import db_pur_beurre
 from mysql_connector import dbcursor
 
 
+# -tc- ProductStorage et ProductManager ont à priori le même rôle. Pourquoi deux
+# -tc- classes?
 class Product_storage:
-
     def __init__(self, data):
 
         self.data = data
 
     def save(self):
 
-       save_formula = "INSERT INTO product (id, name, nutrition_grade, ingredients, url, categories, stores) VALUES (%s, %s, %s, %s, %s, %s, %s)" 
-       dbcursor.executemany(save_formula, self.data)
-       db_pur_beurre.commit()
+        save_formula = "INSERT INTO product (id, name, nutrition_grade, ingredients, url, categories, stores) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        dbcursor.executemany(save_formula, self.data)
+        db_pur_beurre.commit()
 
 
+# -tc- éviter le code exécutable à la racine du fichier.
 Product_storage(cleaned_products).save()
 
 """class ProductManager:
