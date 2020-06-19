@@ -2,15 +2,16 @@
 
 import requests
 
-"""imports products from api"""
+
 class ProductDownloader:
+    """imports products from api"""
      
     url = "https://fr.openfoodfacts.org/cgi/search.pl"
     params = {
         "action" : "process",
         "sort_by" : "unique_scans_n",
         "page" : 1,
-        "page_size" : 100,
+        "page_size" : 1000,
         "json" : 1
         }
 
@@ -33,16 +34,24 @@ class ProductDownloader:
             )
         return cls()
 
-    #sends request to API
+    
     def request(self):
+        #sends request to API
 
         return requests.get(self.url, params=self.params)
 
-    #stores response from API in a json format
+    
     def response(self):
+        #stores response from API in a json format
         
-        response = self.request()
-        self.data = response.json()
-        return self.data
-
+        data = []
+        try:
+          response = self.request()
+        except requests.ConnectionError:
+           pass
+        else:
+            if response.status_code == 200:
+                # -tc- Attention à faire de la gestion des erreurs
+                data = response.json()
+        return data
 

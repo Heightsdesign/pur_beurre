@@ -28,7 +28,7 @@ class Table:
      def create_table(self):
 
           dbcursor.execute("USE pur_beurre;")
-          dbcursor.execute("CREATE TABLE IF NOT EXISTS {}({}) ENGINE=INNODB;".format(self.name, self.attrs))
+          dbcursor.execute("CREATE TABLE IF NOT EXISTS {}({})".format(self.name, self.attrs))
 
 
 """Main fonctions to execute, create database and then the tables"""
@@ -39,14 +39,17 @@ def main_database():
 
      products_table_attrs = "id BIGINT UNSIGNED NOT NULL, name VARCHAR(100) NOT NULL, nutriscore CHAR(1) NOT NULL, ingredients TEXT, url TINYTEXT, PRIMARY KEY(id) "
      products_table = Table("Products", products_table_attrs)
-     products_table.create_table()
+     
+     products_categories_table_attrs = "id INT PRIMARY KEY AUTO_INCREMENT, idproduct BIGINT UNSIGNED NOT NULL, idcategory INT NOT NULL, FOREIGN KEY (idproduct) REFERENCES Products (id), FOREIGN KEY (idcategory) REFERENCES Categories (id)"
+     products_categories_table = Table("Products_Categories", products_categories_table_attrs)
+     
 
-     products_categories_table_attrs = "id_product BIGINT UNSIGNED NOT NULL, id_category SMALLINT UNSIGNED NOT NULL"
-     products_categories_table = Table("Products-Categories", products_categories_table_attrs)
+     categories_table_attrs = "id INT NOT NULL AUTO_INCREMENT, name VARCHAR(100), PRIMARY KEY(id)"
+     categories_table = Table("Categories", categories_table_attrs)
+
+     products_table.create_table()
+     categories_table.create_table()
      products_categories_table.create_table()
 
-     categories_table_attrs = "id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT, name VARCHAR(100)"
-     categories_table = Table("Categories", categories_table_attrs)
-     categories_table.create_table()
 
-
+main_database()

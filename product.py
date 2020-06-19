@@ -4,11 +4,12 @@ from api import ProductDownloader
 from mysql_connector import db_pur_beurre
 from mysql_connector import dbcursor
 
-"""Creating Product object"""
-class Product:
 
-    #initializes the object with attributes passed as arguments
+class Product:
+    """Creating Product object"""
+    
     def __init__(self, id, name, nutriscore, ingredients, stores, url, categories):
+    #initializes the object with attributes passed as arguments
 
         self.id = id
         self.name = name
@@ -19,17 +20,19 @@ class Product:
         self.categories = categories
 
 
-"""Iterates through the data and creates objects from of it and adds them to a list"""
-class ProductParser: 
 
-    #initializes object ProductParser, the parameters passed as an argument are determined in the ProductDownloader class
+class ProductParser: 
+    """Iterates through the data and creates objects from of it and adds them to a list"""
+    
     def __init__(self, parameter):
+    #initializes object ProductParser, the parameters passed as an argument are determined in the ProductDownloader class
 
         self.parameter = parameter
         self.data = ProductDownloader().response()
 
-    #verifies if products attributes are valid
+    
     def is_valid(self, prod): 
+    #verifies if products attributes are valid
 
         self.prod = prod
 
@@ -41,8 +44,9 @@ class ProductParser:
                 return False
         return True
 
-    """Iterates through data, creates object from it and adds them to a list"""
+    
     def parser(self):
+        """Iterates through data, creates object from it and adds them to a list"""
 
         products = self.data["products"]
         obj_list = []
@@ -52,8 +56,8 @@ class ProductParser:
                     prod["code"], 
                     prod["product_name_fr"], 
                     prod["nutrition_grade_fr"], 
-                    prod["ingredients_text_fr"], 
-                    prod["stores"], 
+                    prod.get("ingredients_text_fr",""),
+                    prod.get("stores",""),
                     prod["url"], 
                     prod["categories"])
             obj_list.append(product)
@@ -63,16 +67,15 @@ class ProductParser:
 param_1 = ProductDownloader().response()
 productlist = ProductParser(param_1).parser()
 
-"""for product in productlist:
-    print(product.id)"""
-
 
 
 class ProductManager:
+    """Methods to execute with product objects"""
 
     def save(self):
+    #Inserts products in database
         
-        #products = [Product(id, name, nutriscore, ingredients, stores, url, categories) for id, name, nutriscore, ingredients, stores, url, categories in productlist]
         dbcursor.execute("USE pur_beurre;")
         for product in productlist:
-            dbcursor.execute("INSERT into Products(id, name, nutriscore, ingredients, url) VALUES({},{},{},{},{})".format(product.id, product.name, product.nutriscore, product.ingredients, product.url))
+            dbcursor.execute("INSERT into Products(id, name, nutriscore, ingredients, url) VALUES({},{},{},{},{});".format(product.id, product.name, product.nutriscore, product.ingredients, product.url))
+
