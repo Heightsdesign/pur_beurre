@@ -41,14 +41,16 @@ class CategoryManager:
         categories = self.category.get_names()
 
         dbcursor.execute("USE pur_beurre;")
-        command = "INSERT INTO Categories (id, name) VALUES (NULL, %(name)s);"
+        command = "INSERT IGNORE INTO Categories (id, name) VALUES (NULL, %(name)s);"
         for cat in categories:
             for name in cat:
-                dbcursor.execute(command,{'name': name})
+                dbcursor.execute(command,{'name': name.strip()})
         db_pur_beurre.commit()
 
+   
 categorymanager = CategoryManager(category)
 categorymanager.save()
+
 
 
 def main_categories():

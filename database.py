@@ -38,18 +38,32 @@ def main_database():
      database.databasecreator()
 
      products_table_attrs = "id BIGINT UNSIGNED NOT NULL, name VARCHAR(100) NOT NULL, nutriscore CHAR(1) NOT NULL, ingredients TEXT, url TINYTEXT, PRIMARY KEY(id) "
+
      products_table = Table("Products", products_table_attrs)
      
-     products_categories_table_attrs = "id INT PRIMARY KEY AUTO_INCREMENT, idproduct BIGINT UNSIGNED NOT NULL, idcategory INT NOT NULL, FOREIGN KEY (idproduct) REFERENCES Products (id), FOREIGN KEY (idcategory) REFERENCES Categories (id)"
-     products_categories_table = Table("Products_Categories", products_categories_table_attrs)
-     
+     product_categories_table_attrs = "id INT PRIMARY KEY AUTO_INCREMENT, idproduct BIGINT UNSIGNED NOT NULL, idcategory INT NOT NULL, FOREIGN KEY (idproduct) REFERENCES Products (id), FOREIGN KEY (idcategory) REFERENCES Categories (id)"
 
-     categories_table_attrs = "id INT NOT NULL AUTO_INCREMENT, name VARCHAR(100), PRIMARY KEY(id)"
+     product_categories_table = Table("Product_Categories", product_categories_table_attrs)
+     
+     categories_table_attrs = "id INT NOT NULL AUTO_INCREMENT, name VARCHAR(100) NOT NULL UNIQUE, PRIMARY KEY(id)"
      categories_table = Table("Categories", categories_table_attrs)
+
+     stores_table_attrs = "id INT NOT NULL AUTO_INCREMENT, name VARCHAR(100) NOT NULL UNIQUE, PRIMARY KEY(id)"
+     stores_table = Table("Stores", stores_table_attrs)
+
+     product_stores_table_attrs = "id INT PRIMARY KEY AUTO_INCREMENT, idproduct BIGINT UNSIGNED NOT NULL, idstore INT, FOREIGN KEY (idproduct) REFERENCES Products (id), FOREIGN KEY (idstore) REFERENCES Stores (id)"
+     product_stores_table = Table("Product_Stores", product_stores_table_attrs)
+
+     favorites_table_attrs  = "id SMALLINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(100) NOT NULL, url TINYTEXT NOT NULL, FOREIGN KEY url REFERENCES Products (url)"
+     favorites_table = Table("Favorites", favorites_table_attrs)
+
 
      products_table.create_table()
      categories_table.create_table()
-     products_categories_table.create_table()
+     product_categories_table.create_table()
+     stores_table.create_table()
+     product_stores_table.create_table()
+     favorites_table.create_table()
 
 
 main_database()

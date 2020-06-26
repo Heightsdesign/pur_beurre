@@ -59,13 +59,17 @@ class ProductParser:
                     prod.get("ingredients_text_fr",""),
                     prod.get("stores",""),
                     prod["url"], 
-                    prod["categories"])
+                    prod["categories"]
+                )
             obj_list.append(product)
         return obj_list
 
 
 param_1 = ProductDownloader().response()
 productlist = ProductParser(param_1).parser()
+
+#for prod in productlist:
+    #print(prod.id)
 
 
 
@@ -77,5 +81,14 @@ class ProductManager:
         
         dbcursor.execute("USE pur_beurre;")
         for product in productlist:
-            dbcursor.execute("INSERT into Products(id, name, nutriscore, ingredients, url) VALUES({},{},{},{},{});".format(product.id, product.name, product.nutriscore, product.ingredients, product.url))
+            dbcursor.execute(
+                "INSERT into Products(id, name, nutriscore, ingredients, url) "
+                "VALUES({},{},{},{},{});"
+                .format(
+                    product.id, 
+                    product.name, 
+                    product.nutriscore, 
+                    product.ingredients, 
+                    product.url)
+                )
 
