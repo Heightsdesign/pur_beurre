@@ -69,7 +69,7 @@ productlist = ProductParser(param_1).parser()
 
 #for prod in productlist:
     #print(prod.id)
-#print(productlist[1].categories)
+print(productlist[1].stores)
 
 class ProductManager:
     """Methods to execute with product objects"""
