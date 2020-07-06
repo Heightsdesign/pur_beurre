@@ -37,7 +37,7 @@ def main_database():
      database = Database("CREATE DATABASE IF NOT EXISTS pur_beurre CHARACTER SET 'utf8';")
      database.databasecreator()
 
-     products_table_attrs = "id BIGINT UNSIGNED NOT NULL, name VARCHAR(100) NOT NULL, nutriscore CHAR(1) NOT NULL, ingredients TEXT, url TINYTEXT, PRIMARY KEY(id) "
+     products_table_attrs = "id BIGINT UNSIGNED NOT NULL, name VARCHAR(255) NOT NULL, nutriscore VARCHAR(1) NOT NULL, ingredients TEXT, url VARCHAR(255) NOT NULL, PRIMARY KEY(id) "
 
      products_table = Table("Products", products_table_attrs)
      
@@ -54,7 +54,7 @@ def main_database():
      product_stores_table_attrs = "id INT PRIMARY KEY AUTO_INCREMENT, idproduct BIGINT UNSIGNED NOT NULL, idstore INT, FOREIGN KEY (idproduct) REFERENCES Products (id), FOREIGN KEY (idstore) REFERENCES Stores (id)"
      product_stores_table = Table("Product_Stores", product_stores_table_attrs)
 
-     favorites_table_attrs  = "id SMALLINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(100) NOT NULL, url TINYTEXT NOT NULL, FOREIGN KEY url REFERENCES Products (url)"
+     favorites_table_attrs  = "id SMALLINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(100) NOT NULL, id_product BIGINT UNSIGNED NOT NULL, FOREIGN KEY (id_product) REFERENCES Products (id)"
      favorites_table = Table("Favorites", favorites_table_attrs)
 
 

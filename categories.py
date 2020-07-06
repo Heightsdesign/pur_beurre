@@ -25,7 +25,8 @@ class Category:
         return categories_obj_list
 
 category = Category("name")
-#print (category.get_names())
+#categories = category.get_names()
+#print(category.get_names())
 
 
 class CategoryManager:
@@ -47,10 +48,19 @@ class CategoryManager:
                 dbcursor.execute(command,{'name': name.strip()})
         db_pur_beurre.commit()
 
-   
+    def save_in_list(self):
+
+        categories = self.category.get_names()
+
+        categories_variable = []
+        for cat in categories:
+            for name in cat:
+                categories_variable.append(name.strip())
+        return categories_variable
+
 categorymanager = CategoryManager(category)
 categorymanager.save()
-
+categories_list = categorymanager.save_in_list()
 
 
 def main_categories():

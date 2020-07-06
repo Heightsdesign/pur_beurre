@@ -4,7 +4,6 @@ from api import ProductDownloader
 from mysql_connector import db_pur_beurre
 from mysql_connector import dbcursor
 
-
 class Product:
     """Creating Product object"""
     
@@ -70,25 +69,33 @@ productlist = ProductParser(param_1).parser()
 
 #for prod in productlist:
     #print(prod.id)
-
-
+#print(productlist[1].categories)
 
 class ProductManager:
     """Methods to execute with product objects"""
 
+    def __init__(self, product):
+
+        self.product = product
+
     def save(self):
     #Inserts products in database
+        
         
         dbcursor.execute("USE pur_beurre;")
         for product in productlist:
             dbcursor.execute(
-                "INSERT into Products(id, name, nutriscore, ingredients, url) "
-                "VALUES({},{},{},{},{});"
-                .format(
+                "INSERT IGNORE into Products(id, name, nutriscore, ingredients, url) "
+                "VALUES('%s','%s','%s','%s','%s');" %
+                (
                     product.id, 
-                    product.name, 
+                    product.name.replace("'", " "), 
                     product.nutriscore, 
-                    product.ingredients, 
+                    product.ingredients.replace("'", " "), 
                     product.url)
                 )
+            
+        db_pur_beurre.commit()
 
+productmanager = ProductManager("product")
+productmanager.save()
