@@ -1,4 +1,4 @@
-"""This file the favorite object and favorite manager"""
+"""This file is the favorite object and favorite manager"""
 
 class Favorite:
 

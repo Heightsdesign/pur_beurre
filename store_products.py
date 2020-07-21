@@ -6,7 +6,7 @@ import categories
 
 
 class TableInserterII:
-    """use this cass to insert data into the product_stores table"""
+    """use this class to insert data into the product_stores table"""
     def __init__(self, product):
 
         self.product = product

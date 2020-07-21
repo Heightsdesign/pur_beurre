@@ -2,7 +2,6 @@
 
 from mysql_connector import dbcursor
 
-
 class Database:
 
      def __init__(self, command):
@@ -13,8 +12,6 @@ class Database:
      def databasecreator(self):
 
           return dbcursor.execute(self.command)
-
-
 
 
 """Creating Table object"""
@@ -64,6 +61,5 @@ def main_database():
      stores_table.create_table()
      product_stores_table.create_table()
      favorites_table.create_table()
-
 
 main_database()
