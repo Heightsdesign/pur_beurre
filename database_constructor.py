@@ -1,4 +1,4 @@
-"""This file builds and inserts anll the data in tne database"""
+"""This file builds and inserts all the data in tne database"""
 
 import database
 import product

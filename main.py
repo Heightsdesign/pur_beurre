@@ -2,18 +2,29 @@
 
 
 
-"""Ask user for which categories of food he wants to have alternatives
+"""Ask user for which categories of food he wants to have alternatives"""
 
 #pseudocode !!!
 
 #mettre message bienvenue
 #accueil ---> 1 categories, 2 favoris, 3 quitter
 
-first_request = input("Choisissez un catégorie parmi celles affichées (veuillez selectionner le nombre correspondant)")
+#first_request = input("Choisissez un catégorie parmi celles affichées (veuillez selectionner le nombre correspondant)")
 
-categories_list = "categories list"
+#categories_list = "categories list"
+#main_loop = True
+#while main_loop:
 
-def showscreen():
+print("<<< Bienvenue, l'application Pur Beurre vous permet de substituer vos aliments favoris par des alternatives plus saines. >>>")
+print("Veuillez selectionner une option (entrez le chiffre correspondant):")
+x = 0
+selection = [". Categories", ". Favories", ". Quitter"]
+
+for i in selection:
+    x += 1
+    print(str(x) + i)
+
+"""def showscreen():
 
     print(first_request)
     print(categories_list)
