@@ -61,9 +61,8 @@ class CategoryManager:
 categorymanager = CategoryManager(category)
 categorymanager.save()
 categories_list = categorymanager.save_in_list()
+print_categories = [Product.categories for Product in productlist]
+print(print_categories)
 
-
-def main_categories():
-    pass
 
     
