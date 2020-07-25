@@ -1,14 +1,6 @@
 """Main file, contains program interaction with user"""
 from mysql_connector import dbcursor
 
-#pseudocode !!!
-
-#mettre message bienvenue
-#accueil ---> 1 categories, 2 favoris, 3 quitter
-
-#first_request = input("Choisissez un catégorie parmi celles affichées (veuillez selectionner le nombre correspondant)")
-
-#categories_list = "categories list"
 
 print("<<< Bienvenue, l'application Pur Beurre vous permet de substituer vos aliments favoris par des alternatives plus saines. >>>\n")
         
@@ -16,7 +8,8 @@ print("<<< Bienvenue, l'application Pur Beurre vous permet de substituer vos ali
 selection = [". Categories", ". Favories", ". Quitter"]
 menu_choice = []
 categories_menu = 0
-categories_menu_list = ["Aliments d'origine vegetale", "Boissons", "Céréales", "Légumes", "Pains", "Produits Laitiers", "Produits à tartiner", "Sauces", "Snacks"]
+favorites_menu = 0
+categories_menu_list = ["Aliments d'origine végétale", "Boissons", "Céréales et dérivés", "Fromages", "Légumes", "Produits Laitiers", "Produits à tartiner", "Sauces", "Snacks"]
 
 
 while 1:
@@ -36,7 +29,7 @@ while 1:
         menu_choice.append(1)
         break
     elif menu == 2:
-        print("favories")
+        print("Favories")
         break
     elif menu == 3:
         print("Merci d'avoir utlisé Pur Beurre, à bientôt :)")
@@ -48,6 +41,8 @@ while 1:
 
 if menu_choice[0] == 1 :
     categories_menu = 1
+elif menu_choice[0] == 2 :
+    favorites_menu = 1
 
 while categories_menu == 1:
 
@@ -55,9 +50,12 @@ while categories_menu == 1:
     for category in categories_menu_list:
         y += 1
         print("\t" + str(y) + ". " + category)
+        print("\t 10. Quitter le programme")
     print("\n")
     
-    categories_menu = int(input("Veuillez séléctionner la catégorie d'aliments que vous souhaitez substituer (entrez le chiffre correspondant): "))
+    categories_menu = int(input("Veuillez séléctionner la catégorie d'aliments que vous souhaitez substituer (entrez le chiffre correspondant ou 10 pour quitter le programme): "))
+    print("\n")
+
     if categories_menu > 0 and categories_menu < 10 :
         index = categories_menu - 1
         dbcursor.execute("USE pur_beurre")
@@ -70,13 +68,17 @@ while categories_menu == 1:
     {'category' : categories_menu_list[index]})
 
         result = dbcursor.fetchall()
-
+        num = 0
         for product in result:
-            print(product)
-            break
-        
+            num += 1
+            print("\t" + str(num) + ". " + str(product))
+        break
+
     elif categories_menu == 10 : 
         print("Merci d'avoir utlisé Pur Beurre, à bientôt :)")
         break
+
+    else :
+        print("Saisie incorrecte veuillez entrer un chiffre correspondant à la catégorie souhaitée ou entrez 10 pour quitter le programme")
 
 
