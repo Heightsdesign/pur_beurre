@@ -50,7 +50,7 @@ while categories_menu == 1:
     for category in categories_menu_list:
         y += 1
         print("\t" + str(y) + ". " + category)
-        print("\t 10. Quitter le programme")
+    print("\t" "10. Quitter le programme")
     print("\n")
     
     categories_menu = int(input("Veuillez séléctionner la catégorie d'aliments que vous souhaitez substituer (entrez le chiffre correspondant ou 10 pour quitter le programme): "))

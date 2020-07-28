@@ -15,21 +15,18 @@ class ProductDownloader:
         "json" : 1
         }
 
-    """This class method will use our Productdownloader class and update the category we want, passed as and argument"""
+    """This class method will use our Productdownloader class to get multiple pages"""
     @classmethod
-    def get_products_by_category(cls, category):
+    def get_multiple_pages(cls, page):
         
-        cls.category = category
+        cls.page = page
         cls.params.update(
             {
             "action" : "process",
             "sort_by" : "unique_scans_n",
             "page" : 1,
             "page_size" : 20,
-            "json" : 1,
-            "tagtype_0": "categories",
-            "tag_contains_0": "contains",
-            "tag_0": cls.category
+            "json" : cls.page
             }
             )
         return cls()
@@ -51,7 +48,6 @@ class ProductDownloader:
            pass
         else:
             if response.status_code == 200:
-                # -tc- Attention à faire de la gestion des erreurs
                 data = response.json()
         return data
 
