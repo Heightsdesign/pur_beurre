@@ -23,10 +23,10 @@ class Product:
 class ProductParser: 
     """Iterates through the data and creates objects from of it and adds them to a list"""
     
-    def __init__(self, parameter):
+    def __init__(self):
     #initializes object ProductParser, the parameters passed as an argument are determined in the ProductDownloader class
 
-        self.parameter = parameter
+
         self.data = ProductDownloader().response()
 
     
@@ -46,30 +46,26 @@ class ProductParser:
     
     def parser(self):
         """Iterates through data, creates object from it and adds them to a list"""
-
-        products = self.data["products"]
         obj_list = []
-        for prod in products:
-            if self.is_valid(prod):
-                product = Product(
-                    prod["code"], 
-                    prod["product_name_fr"], 
-                    prod["nutrition_grade_fr"], 
-                    prod.get("ingredients_text_fr",""),
-                    prod.get("stores",""),
-                    prod["url"], 
-                    prod["categories"]
-                )
-            obj_list.append(product)
+        for page in self.data:
+            products = page["products"]
+            for prod in products:
+                if self.is_valid(prod):
+                    product = Product(
+                        prod["code"], 
+                        prod["product_name_fr"], 
+                        prod["nutrition_grade_fr"], 
+                        prod.get("ingredients_text_fr",""),
+                        prod.get("stores",""),
+                        prod["url"], 
+                        prod["categories"]
+                    )
+                obj_list.append(product)
         return obj_list
 
+productlist = ProductParser().parser()
 
-param_1 = ProductDownloader().response()
-productlist = ProductParser(param_1).parser()
-
-#for prod in productlist:
-    #print(prod.id)
-print(productlist[1].stores)
+print(len(productlist))
 
 class ProductManager:
     """Methods to execute with product objects"""
@@ -98,4 +94,3 @@ class ProductManager:
         db_pur_beurre.commit()
 
 productmanager = ProductManager("product")
-productmanager.save()

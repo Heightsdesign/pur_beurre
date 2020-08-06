@@ -69,9 +69,13 @@ while categories_menu == 1:
 
         result = dbcursor.fetchall()
         num = 0
+        products_num = []
+
         for product in result:
             num += 1
+            products_num.append(num)
             print("\t" + str(num) + ". " + str(product))
+            
         break
 
     elif categories_menu == 10 : 
@@ -80,5 +84,29 @@ while categories_menu == 1:
 
     else :
         print("Saisie incorrecte veuillez entrer un chiffre correspondant à la catégorie souhaitée ou entrez 10 pour quitter le programme")
+
+print (products_num)
+#psuedocode 
+while 1:
+
+
+    product_input = int(input("Veuillez séléctionner le produit que vous souhaitez substituer (Entrez le chiffre correspondant): "))
+
+    if product_input in products_num:
+        print("this is your product and substitutes" + str(result[index - 1]))
+        dbcursor.execute("USE pur_beurre")
+        dbcursor.execute(
+    "SELECT products.name AS prodname "
+    "FROM products "
+    "INNER JOIN product_categories ON product_categories.idproduct = products.id "
+    "INNER JOIN categories ON product_categories.idcategory = categories.id "
+    "WHERE categories.name = %(category)s",
+    {'category' : categories_menu_list[index]})
+
+        break
+
+    else :
+        print("wrong data")
+
 
 

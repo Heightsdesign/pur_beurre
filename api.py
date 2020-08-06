@@ -31,7 +31,6 @@ class ProductDownloader:
             )
         return cls()
 
-    
     def request(self):
         #sends request to API
 
@@ -42,12 +41,16 @@ class ProductDownloader:
         #stores response from API in a json format
         
         data = []
-        try:
-          response = self.request()
-        except requests.ConnectionError:
-           pass
-        else:
-            if response.status_code == 200:
-                data = response.json()
+        for i in range(0, 5):
+            self.params["page"] += 1
+            try:
+                response = self.request()
+            except requests.ConnectionError:
+                        pass
+            else:
+                if response.status_code == 200:
+                    data.append(response.json())
         return data
+
+#print(ProductDownloader().response())
 
