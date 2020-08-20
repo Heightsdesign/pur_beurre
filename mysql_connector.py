@@ -8,4 +8,4 @@ db_pur_beurre = mysql.connector.connect(
     #database = 'pur_beurre'
 )
 
-dbcursor = db_pur_beurre.cursor()
+dbcursor = db_pur_beurre.cursor(buffered=True)

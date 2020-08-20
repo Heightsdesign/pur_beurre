@@ -3,6 +3,7 @@
 from api import ProductDownloader
 from mysql_connector import db_pur_beurre
 from mysql_connector import dbcursor
+import constants
 
 class Product:
     """Creating Product object"""
@@ -65,7 +66,7 @@ class ProductParser:
 
 productlist = ProductParser().parser()
 
-print(len(productlist))
+#print(len(productlist))
 
 class ProductManager:
     """Methods to execute with product objects"""
@@ -92,5 +93,91 @@ class ProductManager:
                 )
             
         db_pur_beurre.commit()
+
+    def products_category_fetcher(self):
+
+        global result
+
+        dbcursor.execute("USE pur_beurre")
+
+        dbcursor.execute(
+    "SELECT products.name AS prodname "
+    "FROM products "
+    "INNER JOIN product_categories ON product_categories.idproduct = products.id "
+    "INNER JOIN categories ON product_categories.idcategory = categories.id "
+    "WHERE categories.name = %(category)s",
+    {'category' : constants.categories_menu_list[int(constants.categories_menu) - 1]})
+
+        result = dbcursor.fetchall()
+
+        return result
+
+    def get_product_substitutes(self):
+
+        global substitutes_names
+        global substitutes_categories
+        global substitutes
+        substitutes_categories =[]
+        substitutes = {}
+
+        dbcursor.execute("USE pur_beurre")
+
+        dbcursor.execute(
+    "SELECT products.name "
+    "FROM products "
+    "INNER JOIN product_categories ON product_categories.idproduct = products.id "
+    "INNER JOIN categories ON product_categories.idcategory = categories.id "
+    "WHERE categories.name IN (SELECT categories.name "
+    "FROM categories "
+    "INNER JOIN product_categories ON product_categories.idcategory = categories.id "
+    "INNER JOIN products ON product_categories.idproduct = products.id "
+    "WHERE products.name = %(product)s)",
+    {'product' : str(result[int(constants.product_input) - 1]).replace('(', '').replace(')', '').replace(',', '').replace("'", '')})
+
+        substitutes_names = dbcursor.fetchall()
+
+        for substitute in substitutes_names:
+            dbcursor.execute("USE pur_beurre")
+            dbcursor.execute(
+        "SELECT categories.name "
+        "FROM categories "
+        "INNER JOIN product_categories ON product_categories.idcategory = categories.id "
+        "INNER JOIN products ON product_categories.idproduct = products.id "
+        "WHERE products.name = %(substitute)s",
+        {'substitute' : str(substitute).replace('(', '').replace(')', '').replace(',', '').replace("'", '')})
+
+            fetcher = dbcursor.fetchall()
+            substitutes_categories.append(fetcher)
+            for categories in substitutes_categories:
+                substitutes.update([(substitute, categories)])
+
+        return substitutes
+
+    def get_product_substitutes_2(self):
+
+        for substitute, categories in substitutes.items():
+            shared_categories = 0
+            for category in categories:
+                if category in substitutes_categories[0]:
+                    shared_categories += 1
+
+            substitutes.update([(substitute, shared_categories)])
+
+        sorted_substitutes = sorted(substitutes.items(), key=lambda x: x[1], reverse=True)
+
+        for key in sorted_substitutes:
+            print(key)
+            dbcursor.execute("USE pur_beurre")
+            dbcursor.execute(
+        "SELECT products.name, products.id, products.ingredients, products.nutriscore, products.url "
+        "FROM products "
+        "WHERE products.name = %(name)s",
+        {'name' : str(key).replace('(', '').replace(')', '').replace(',', '').replace("'", '')}
+        )
+        substitutes_final = dbcursor.fetchall()
+
+        return substitutes_final
+
+    
 
 productmanager = ProductManager("product")
