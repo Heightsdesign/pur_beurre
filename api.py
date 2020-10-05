@@ -1,7 +1,8 @@
 """This file is used to contact the api and download data from it"""
 
 import requests
-
+from tqdm import tqdm
+import time
 
 class ProductDownloader:
     """imports products from api"""
@@ -41,7 +42,8 @@ class ProductDownloader:
         #stores response from API in a json format
         
         data = []
-        for i in range(0, 5):
+        for i in tqdm(range(0, 5)):
+            time.sleep(0.3)
             self.params["page"] += 1
             try:
                 response = self.request()
