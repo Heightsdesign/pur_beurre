@@ -15,7 +15,7 @@ class Store:
     def get_names(self):
         #get the names for the stores
 
-        stores_names = [Product.stores for Product in productlist]
+        stores_names = [product.stores for product in productlist]
         stores_obj_list = []
         for names in stores_names:
             for name in names.split(','):

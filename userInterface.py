@@ -28,7 +28,7 @@ class UserInterface:
         while True:
 
             print("1 : Categories Menu \n")
-            print("2: Favories \n")
+            print("2 : Favories \n")
 
             menu = input(
                 "Veuillez selectionner une option (entrez le chiffre correspondant ou entrez q pour quitter): ")
@@ -89,28 +89,32 @@ class UserInterface:
 
         while True:
 
-            prod_subs = []
+
             constants.product_input = input(
                 "Veuillez séléctionner le produit que vous souhaitez substituer (Entrez le chiffre correspondant): ")
 
             if int(constants.product_input) in self.products_num:
                 self.productmanager.get_product_substitutes()
-                self.productmanager.get_product_substitutes_2()
+                prodselect = self.productmanager.get_product_substitutes_2()
+
             else:
 
                 print("wrong data")
             
-            return prod_subs
+            return prodselect
 
-    def result_parser(self, substitutes_final):
+    def result_parser(self, prodselect):
 
-        for result in substitutes_final:
+        for result in prodselect:
             for attributes in result:
-                print("Nom: " + str(attributes[0]) + "\n")
-                print("Code: " + str(attributes[1] ) + "\n")
-                print("Ingredients: " + str(attributes[2]) + "\n")
-                print("Nutriscore: " + str(attributes[3]) + "\n")
-                print("URL: " + str(attributes[4]) + "\n")
+                if str(attributes[3]) in constants.nutriscore:
+                    print("___________________________________________________________________________________________________________" + "\n")
+                    print("Nom: " + str(attributes[0]) + "\n")
+                    print("Code: " + str(attributes[1] ) + "\n")
+                    print("Ingredients: " + str(attributes[2]) + "\n")
+                    print("Nutriscore: " + str(attributes[3]) + "\n")
+                    print("URL: " + str(attributes[4]) + "\n")
+                    #à faire : n'afficher que 5 substitus et les trier par nutriscore
 
     def run_user_interface(self):
         self.menu_constructor(constants.selection)
@@ -120,7 +124,7 @@ class UserInterface:
         if constants.categories_menu == 1:
             self.menu_constructor(constants.categories_menu_list)
             self.categories_menu()
-            substitutes_final = self.product_selection()
-            self.result_parser(substitutes_final)
+            prodselect = self.product_selection()
+            self.result_parser(prodselect)
         else:
             print("Favories")
