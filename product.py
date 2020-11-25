@@ -61,24 +61,18 @@ class ProductParser:
                 obj_list.append(product)
         return obj_list
 
-
-productlist = ProductParser().parser()
-
-# print(len(productlist))
-
-
 class ProductManager:
     """Methods to execute with product objects"""
 
-    def __init__(self, product):
+    def __init__(self, products):
 
-        self.product = product
+        self.product_list = products
 
     def save(self):
         # Inserts products in database
 
         dbcursor.execute("USE pur_beurre;")
-        for product in productlist:
+        for product in self.product_list:
             dbcursor.execute(
                 "INSERT IGNORE into Products(id, name, nutriscore, ingredients, url) "
                 "VALUES('%s','%s','%s','%s','%s');" %
@@ -94,8 +88,6 @@ class ProductManager:
 
     def products_category_fetcher(self):
 
-        global result
-
         dbcursor.execute("USE pur_beurre")
 
         dbcursor.execute(
@@ -106,17 +98,15 @@ class ProductManager:
             "WHERE categories.name = %(category)s",
             {'category': constants.categories_menu_list[int(constants.categories_menu) - 1]})
 
-        result = dbcursor.fetchall()
+        # De prendre dans la table catégorie au hasard 5 catégorie 
 
-        return result
+        self.result = dbcursor.fetchall()
+
+        return self.result
 
     def get_product_substitutes(self):
-
-        global substitutes_names
-        global substitutes_categories
-        global substitutes
-        substitutes_categories = []
-        substitutes = {}
+        self.substitutes_categories = []
+        self.substitutes = {}
 
         dbcursor.execute("USE pur_beurre")
 
@@ -130,7 +120,7 @@ class ProductManager:
             "INNER JOIN product_categories ON product_categories.idcategory = categories.id "
             "INNER JOIN products ON product_categories.idproduct = products.id "
             "WHERE products.name = %(product)s)",
-            {'product': str(result[int(constants.product_input) - 1]).replace('(', '').replace(')', '').replace(',', '').replace("'", '')})
+            {'product': str(self.result[int(constants.product_input) - 1]).replace('(', '').replace(')', '').replace(',', '').replace("'", '')})
 
         substitutes_names = dbcursor.fetchall()
 
@@ -145,26 +135,24 @@ class ProductManager:
                 {'substitute': str(substitute).replace('(', '').replace(')', '').replace(',', '').replace("'", '')})
 
             fetcher = dbcursor.fetchall()
-            substitutes_categories.append(fetcher)
-            for categories in substitutes_categories:
-                substitutes.update([(substitute, categories)])
+            self.substitutes_categories.append(fetcher)
+            for categories in self.substitutes_categories:
+                self.substitutes.update([(substitute, categories)])
 
-        return substitutes
+        return self.substitutes
 
     def get_product_substitutes_2(self):
-
-        global substitutes_final
         substitutes_final = []
-        for substitute, categories in substitutes.items():
+        for substitute, categories in self.substitutes.items():
             shared_categories = 0
             for category in categories:
-                if category in substitutes_categories[0]:
+                if category in self.substitutes_categories[0]:
                     shared_categories += 1
 
-            substitutes.update([(substitute, shared_categories)])
+            self.substitutes.update([(substitute, shared_categories)])
 
         sorted_substitutes = sorted(
-            substitutes.items(), key=lambda x: x[1], reverse=True)
+            self.substitutes.items(), key=lambda x: x[1], reverse=True)
         
         for key in sorted_substitutes[0:5]:
 
@@ -180,14 +168,3 @@ class ProductManager:
             substitutes_final.append(substitutes_fetcher)
 
         return substitutes_final
-
-
-""" def sort_products_by_nutriscore(self):
-
-        for product in substitutes_final:
-            for data in product:
-                for score in nutriscore:
-                    if score"""
-
-
-productmanager = ProductManager("product")

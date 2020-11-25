@@ -12,25 +12,9 @@ class ProductDownloader:
         "action" : "process",
         "sort_by" : "unique_scans_n",
         "page" : 1,
-        "page_size" : 1000,
+        "page_size" : 20,
         "json" : 1
         }
-
-    """This class method will use our Productdownloader class to get multiple pages"""
-    @classmethod
-    def get_multiple_pages(cls, page):
-        
-        cls.page = page
-        cls.params.update(
-            {
-            "action" : "process",
-            "sort_by" : "unique_scans_n",
-            "page" : 1,
-            "page_size" : 20,
-            "json" : cls.page
-            }
-            )
-        return cls()
 
     def request(self):
         #sends request to API
