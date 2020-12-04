@@ -87,6 +87,7 @@ class ProductManager:
         db_pur_beurre.commit()
 
     def products_category_fetcher(self):
+        # Gets products the selected category
 
         dbcursor.execute("USE pur_beurre")
 
@@ -105,6 +106,7 @@ class ProductManager:
         return self.result
 
     def get_product_substitutes(self):
+
         self.substitutes_categories = []
         self.substitutes = {}
 
@@ -121,7 +123,7 @@ class ProductManager:
             "INNER JOIN products ON product_categories.idproduct = products.id "
             "WHERE products.name = %(product)s)",
             {'product': str(self.result[int(constants.product_input) - 1]).replace('(', '').replace(')', '').replace(',', '').replace("'", '')})
-
+        # 1. gets all products/possible substitutes with a common category
         substitutes_names = dbcursor.fetchall()
 
         for substitute in substitutes_names:
@@ -133,15 +135,17 @@ class ProductManager:
                 "INNER JOIN products ON product_categories.idproduct = products.id "
                 "WHERE products.name = %(substitute)s",
                 {'substitute': str(substitute).replace('(', '').replace(')', '').replace(',', '').replace("'", '')})
+            # 2.  gets all the categories names attached to the possible substitutes found in step 1
 
             fetcher = dbcursor.fetchall()
             self.substitutes_categories.append(fetcher)
             for categories in self.substitutes_categories:
                 self.substitutes.update([(substitute, categories)])
-
+                # zips the possible substitutes and their categories in a dict
         return self.substitutes
 
     def get_product_substitutes_2(self):
+
         substitutes_final = []
         for substitute, categories in self.substitutes.items():
             shared_categories = 0
@@ -153,8 +157,9 @@ class ProductManager:
 
         sorted_substitutes = sorted(
             self.substitutes.items(), key=lambda x: x[1], reverse=True)
+            # sorts the substitutes by most shared categories with the original product
         
-        for key in sorted_substitutes[0:5]:
+        for key in sorted_substitutes:
 
             dbcursor.execute("USE pur_beurre")
             dbcursor.execute(
@@ -168,3 +173,6 @@ class ProductManager:
             substitutes_final.append(substitutes_fetcher)
 
         return substitutes_final
+
+
+

@@ -54,15 +54,29 @@ class Database:
           product_stores_table.create_table()
           favorites_table.create_table()
 
+     def delete_doubles(self):
+
+          dbcursor.execute("USE pur_beurre;")
+          dbcursor.execute(
+               "DELETE product_categories FROM product_categories "
+               "LEFT OUTER JOIN ( "
+               "SELECT MIN(id) as id, idproduct, idcategory "
+               "FROM product_categories "
+               "GROUP BY idproduct, idcategory "
+               ") as t1 " 
+               "ON product_categories.id = t1.id "
+               "WHERE t1.id IS NULL;"
+          )
+
+
+
      def database_constructor(self):
+          
          self.main_database()
          product_manager = ProductManager(self.products)
          product_manager.save()
          CategoryManager(self.products).save()
          TableInserter(self.products).insert()
+         self.delete_doubles()
          return product_manager
-         # categories.
-         # stores.storemanager.save()
-         # product_categories.tableinserter.insert()
-         # store_products.tableinserterII.insert()
-
+        
