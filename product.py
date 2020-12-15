@@ -87,7 +87,7 @@ class ProductManager:
         db_pur_beurre.commit()
 
     def products_category_fetcher(self):
-        # Gets products the selected category
+        # Gets products from the selected category
 
         dbcursor.execute("USE pur_beurre")
 
@@ -99,11 +99,23 @@ class ProductManager:
             "WHERE categories.name = %(category)s",
             {'category': constants.categories_menu_list[int(constants.categories_menu) - 1]})
 
-        # De prendre dans la table catégorie au hasard 5 catégorie 
-
         self.result = dbcursor.fetchall()
 
         return self.result
+
+    def get_product_nutriscore(self):
+        #Gets the product nutriscore 
+        dbcursor.execute("USE pur_beurre")
+
+        dbcursor.execute(
+            "SELECT products.nutriscore "
+            "FROM products "
+            "WHERE products.name = %(prod)s",
+            {'prod': str(self.result[int(constants.product_input) - 1]).replace('(', '').replace(')', '').replace(',', '').replace("'", '')})
+
+        nutriscore = dbcursor.fetchall()
+
+        return nutriscore
 
     def get_product_substitutes(self):
 
@@ -123,7 +135,8 @@ class ProductManager:
             "INNER JOIN products ON product_categories.idproduct = products.id "
             "WHERE products.name = %(product)s)",
             {'product': str(self.result[int(constants.product_input) - 1]).replace('(', '').replace(')', '').replace(',', '').replace("'", '')})
-        # 1. gets all products/possible substitutes with a common category
+        # 1. gets all products(possible substitutes) with one common category
+
         substitutes_names = dbcursor.fetchall()
 
         for substitute in substitutes_names:
@@ -138,10 +151,12 @@ class ProductManager:
             # 2.  gets all the categories names attached to the possible substitutes found in step 1
 
             fetcher = dbcursor.fetchall()
+
             self.substitutes_categories.append(fetcher)
             for categories in self.substitutes_categories:
                 self.substitutes.update([(substitute, categories)])
                 # zips the possible substitutes and their categories in a dict
+
         return self.substitutes
 
     def get_product_substitutes_2(self):
@@ -150,27 +165,28 @@ class ProductManager:
         for substitute, categories in self.substitutes.items():
             shared_categories = 0
             for category in categories:
-                if category in self.substitutes_categories[0]:
+                if category in self.substitutes_categories[1]:
                     shared_categories += 1
-
             self.substitutes.update([(substitute, shared_categories)])
 
         sorted_substitutes = sorted(
             self.substitutes.items(), key=lambda x: x[1], reverse=True)
             # sorts the substitutes by most shared categories with the original product
-        
-        for key in sorted_substitutes:
 
-            dbcursor.execute("USE pur_beurre")
-            dbcursor.execute(
-                "SELECT products.name, products.id, products.ingredients, products.nutriscore, products.url "
-                "FROM products "
-                "WHERE products.name = %(name)s ",
-                {'name': str(key[0]).replace('(', '').replace(')', '').replace(
-                    ',', '').replace("'", '').strip()}
-            )
-            substitutes_fetcher = dbcursor.fetchall()
-            substitutes_final.append(substitutes_fetcher)
+        for key, shared_cat in sorted_substitutes:
+            
+            if shared_cat > 1:
+            #verifies if they have more than 1 category in common
+                dbcursor.execute("USE pur_beurre")
+                dbcursor.execute(
+                    "SELECT products.name, products.id, products.ingredients, products.nutriscore, products.url "
+                    "FROM products "
+                    "WHERE products.name = %(name)s ",
+                    {'name': str(key[0]).replace('(', '').replace(')', '').replace(
+                        ',', '').replace("'", '').strip()}
+                )
+                substitutes_fetcher = dbcursor.fetchall()
+                substitutes_final.append(substitutes_fetcher)
 
         return substitutes_final
 

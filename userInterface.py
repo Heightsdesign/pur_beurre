@@ -105,15 +105,23 @@ class UserInterface:
 
     def result_parser(self, prodselect):
 
-        for result in prodselect[:5]:
+        #print(self.productmanager.get_product_nutriscore())
+
+        for result in prodselect:
             for attributes in result:
-                            print("___________________________________________________________________________________________________________" + "\n")
-                            print("Nom: " + str(attributes[0]) + "\n")
-                            print("Code: " + str(attributes[1] ) + "\n")
-                            print("Ingredients: " + str(attributes[2]) + "\n")
-                            print("Nutriscore: " + str(attributes[3]) + "\n")
-                            print("URL: " + str(attributes[4]) + "\n")
-                            #à faire : n'afficher que 5 substitus et les trier par nutriscore
+                #for nutriletter, nutrinum in constants.nutriscore.items():
+                    #if self.productmanager.get_product_nutriscore() >= constants.nutriscore[str(attributes[3])]:
+                print("___________________________________________________________________________________________________________" + "\n")
+                print("Nom: " + str(attributes[0]) + "\n")
+                print("Code: " + str(attributes[1] ) + "\n")
+                print("Ingredients: " + str(attributes[2]) + "\n")
+                print("Nutriscore: " + str(attributes[3]) + "\n")
+                print("URL: " + str(attributes[4]) + "\n")
+                #à faire :  trier par nutriscore
+
+    def favorites_menu(self):
+
+        print("Favories")
 
     def run_user_interface(self):
 
@@ -127,4 +135,4 @@ class UserInterface:
             prodselect = self.product_selection()
             self.result_parser(prodselect)
         else:
-            print("Favories")
+            self.favorites_menu()

@@ -2,5 +2,8 @@
 
 class Favorite:
 
-    def __init__(self, id, name, url):
+    def __init__(self, id):
+        self.id = id
+      
+    def save(self):
         pass
