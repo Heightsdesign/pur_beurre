@@ -17,7 +17,7 @@ afin d'installer tout les modules et librairies nécessaires au bon fonctionneme
 2. Lancement de l'application
 
 Se rendre dans le dossier "pur_beurre" via votre terminal puis
-éxecuter la commande "python3 -m main.py" afin de lancer l'application.
+exécuter la commande "python3 -m main.py" afin de lancer l'application.
 
 3. Fonctionnalités
 
