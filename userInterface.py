@@ -103,21 +103,59 @@ class UserInterface:
             
             return prodselect
 
+    def give_letter_value(self, arg):
+
+        self.arg = arg
+        for letter in arg:
+            if letter in constants.nutriscore:
+                score = constants.nutriscore[letter]
+
+        return score
+
     def result_parser(self, prodselect):
 
-        #print(self.productmanager.get_product_nutriscore())
-
+        favorite = []
+        self.nutriscore = str(self.productmanager.get_product_nutriscore()[0]).replace(',',"").replace("'","").replace("(","").replace(")","")
+        self.nutriscore = self.give_letter_value(self.nutriscore)
+        product_count = 0
         for result in prodselect:
             for attributes in result:
-                #for nutriletter, nutrinum in constants.nutriscore.items():
-                    #if self.productmanager.get_product_nutriscore() >= constants.nutriscore[str(attributes[3])]:
-                print("___________________________________________________________________________________________________________" + "\n")
-                print("Nom: " + str(attributes[0]) + "\n")
-                print("Code: " + str(attributes[1] ) + "\n")
-                print("Ingredients: " + str(attributes[2]) + "\n")
-                print("Nutriscore: " + str(attributes[3]) + "\n")
-                print("URL: " + str(attributes[4]) + "\n")
-                #à faire :  trier par nutriscore
+                if self.nutriscore < self.give_letter_value(attributes[3]) and self.give_letter_value(attributes[3]) <= self.nutriscore + 2:
+                    product_count += 1
+                    """print("___________________________________________________________________________________________________________" + "\n")
+                    print("Nom: " + str(attributes[0]) + "\n")
+                    print("Code: " + str(attributes[1] ) + "\n")
+                    print("Ingredients: " + str(attributes[2]) + "\n")
+                    print("Nutriscore: " + str(attributes[3]) + "\n")
+                    print("URL: " + str(attributes[4]) + "\n")"""
+                    favorite.append(result)
+
+                    if product_count == 0 and self.give_letter_value(attributes[3]) < self.nutriscore + 3:
+                        product_count += 1
+                        favorite.append(result)
+
+                    elif product_count == 0 and self.give_letter_value(attributes[3]) < self.nutriscore + 4:
+                        product_count += 1
+                        favorite.append(result)
+
+                    elif product_count > 1:
+                        favorite.pop(1)
+
+                    
+                    
+
+        print(favorite)
+        return favorite
+
+ #elif self.nutriscore == 'a' and str(attributes[3]) == 'a':
+    #print("___________________________________________________________________________________________________________" + "\n")
+    #print("Nom: " + str(attributes[0]) + "\n")
+    #print("Code: " + str(attributes[1] ) + "\n")
+    #print("Ingredients: " + str(attributes[2]) + "\n")
+    #print("Nutriscore: " + str(attributes[3]) + "\n")
+    #print("URL: " + str(attributes[4]) + "\n")                      
+    #favorite.append(result)
+
 
     def favorites_menu(self):
 
@@ -134,5 +172,6 @@ class UserInterface:
             self.categories_menu()
             prodselect = self.product_selection()
             self.result_parser(prodselect)
+
         else:
             self.favorites_menu()

@@ -8,3 +8,5 @@ categories_menu_list = ["Aliments d'origine végétale", "Boissons", "Céréales
 home_input = "Veuillez selectionner une option (entrez le chiffre correspondant): "
 product_input = 0
 nutriscore = {'a':4, 'b':3, 'c':2, 'd':1, 'e':0}
+nomatch = True
+#test = [4, 3, 2, 1, 0]
