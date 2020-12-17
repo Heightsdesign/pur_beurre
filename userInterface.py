@@ -14,6 +14,8 @@ class UserInterface:
 
     def menu_constructor(self, lst):
 
+        print("\n") 
+
         self.lst = lst
         x = 0
 
@@ -53,13 +55,16 @@ class UserInterface:
     def menu_selector(self):
 
         if constants.menu_choice[0] == 1:
+            print("\t" + "CATEGORIES")
             constants.categories_menu = 1
         elif constants.menu_choice[0] == 2:
+            print("\t" + "FAVORIES")
             constants.favorites_menu = 1
         else:
             print("Merci d'avoir utlisé Pur Beurre, à bientôt :) \n")
 
     def categories_menu(self):
+
         while constants.categories_menu == 1:
 
             constants.categories_menu = input(
@@ -74,7 +79,7 @@ class UserInterface:
                 for prod in products_category:
                     num += 1
                     self.products_num.append(num)
-                    print("\t" + str(num) + ". " + str(prod))
+                    print("\t" + str(num) + ". " + str(prod[1]))
                 break
 
             elif constants.categories_menu == 'q':
@@ -87,8 +92,9 @@ class UserInterface:
 
     def product_selection(self):
 
-        while True:
+        print("\n")
 
+        while True:
 
             constants.product_input = input(
                 "Veuillez séléctionner le produit que vous souhaitez substituer (Entrez le chiffre correspondant): ")
@@ -122,12 +128,7 @@ class UserInterface:
             for attributes in result:
                 if self.nutriscore < self.give_letter_value(attributes[3]) and self.give_letter_value(attributes[3]) <= self.nutriscore + 2:
                     product_count += 1
-                    """print("___________________________________________________________________________________________________________" + "\n")
-                    print("Nom: " + str(attributes[0]) + "\n")
-                    print("Code: " + str(attributes[1] ) + "\n")
-                    print("Ingredients: " + str(attributes[2]) + "\n")
-                    print("Nutriscore: " + str(attributes[3]) + "\n")
-                    print("URL: " + str(attributes[4]) + "\n")"""
+                    
                     favorite.append(result)
 
                     if product_count == 0 and self.give_letter_value(attributes[3]) < self.nutriscore + 3:
@@ -141,20 +142,18 @@ class UserInterface:
                     elif product_count > 1:
                         favorite.pop(1)
 
+        for product in favorite:
+            for attribute in product :
+                print("___________________________________________________________________________________________________________" + "\n")
+                print("Nom: " + str(attribute[0]) + "\n")
+                print("Code: " + str(attribute[1] ) + "\n")
+                print("Ingredients: " + str(attribute[2]) + "\n")
+                print("Nutriscore: " + str(attribute[3]) + "\n")
+                print("URL: " + str(attribute[4]) + "\n")
+                print("___________________________________________________________________________________________________________" + "\n")
                     
-                    
-
-        print(favorite)
+        #print(favorite)
         return favorite
-
- #elif self.nutriscore == 'a' and str(attributes[3]) == 'a':
-    #print("___________________________________________________________________________________________________________" + "\n")
-    #print("Nom: " + str(attributes[0]) + "\n")
-    #print("Code: " + str(attributes[1] ) + "\n")
-    #print("Ingredients: " + str(attributes[2]) + "\n")
-    #print("Nutriscore: " + str(attributes[3]) + "\n")
-    #print("URL: " + str(attributes[4]) + "\n")                      
-    #favorite.append(result)
 
 
     def favorites_menu(self):
