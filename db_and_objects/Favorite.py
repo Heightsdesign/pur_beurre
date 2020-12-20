@@ -1,7 +1,7 @@
 """This file is the favorite object and favorite manager"""
 
-from mysql_connector import db_pur_beurre
-from mysql_connector import dbcursor
+from connexion.mysql_connector import db_pur_beurre
+from connexion.mysql_connector import dbcursor
 
 
 class Favorite:

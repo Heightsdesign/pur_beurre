@@ -1,5 +1,5 @@
 """This file contains everything related to the categories"""
-from mysql_connector import dbcursor, db_pur_beurre
+from connexion.mysql_connector import dbcursor, db_pur_beurre
 
 
 class CategoryManager:

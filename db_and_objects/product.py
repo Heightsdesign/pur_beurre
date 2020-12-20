@@ -2,10 +2,10 @@
 and creates and object Product from it
 and adds the object in a list"""
 
-from api import ProductDownloader
-from mysql_connector import db_pur_beurre
-from mysql_connector import dbcursor
-import constants
+from connexion.api import ProductDownloader
+from connexion.mysql_connector import db_pur_beurre
+from connexion.mysql_connector import dbcursor
+import interface.constants as constants
 
 
 class Product:

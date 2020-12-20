@@ -1,6 +1,6 @@
-from product import ProductParser
-from database import Database
-from userInterface import UserInterface
+from db_and_objects.product import ProductParser
+from db_and_objects.database import Database
+from interface.userInterface import UserInterface
 
 
 def main():

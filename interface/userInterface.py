@@ -1,8 +1,8 @@
 """Main file, contains program interaction with user"""
 
-import product
-import constants
-import Favorite
+from db_and_objects import product
+from interface import constants
+from db_and_objects import Favorite
 
 """constants.selection"""
 

@@ -1,6 +1,6 @@
 """This file contains everything related to the stores
 
-import product
+from db_and_objects import product
 from mysql_connector import dbcursor, db_pur_beurre
 
 class Store:

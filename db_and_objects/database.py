@@ -1,10 +1,10 @@
 """Creating Database and Tables"""
 
-from mysql_connector import dbcursor
-from product import ProductManager
-from categories import CategoryManager
-from product_categories import TableInserter
-from mysql_connector import db_pur_beurre
+from connexion.mysql_connector import dbcursor
+from db_and_objects.product import ProductManager
+from db_and_objects.categories import CategoryManager
+from db_and_objects.product_categories import TableInserter
+from connexion.mysql_connector import db_pur_beurre
 
 
 class Table:

@@ -1,8 +1,8 @@
 """This file inserts the data in the intermidiate table product_stores"""
 
-"""from mysql_connector import dbcursor, db_pur_beurre
-import product
-import categories
+"""from connexion.mysql_connector import dbcursor, db_pur_beurre
+from db_and_objects import product
+from db_and_objects import categories
 
 
 class TableInserterII:
