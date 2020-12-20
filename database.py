@@ -5,78 +5,111 @@ from product import ProductManager
 from categories import CategoryManager
 from product_categories import TableInserter
 
-"""Creating Table object"""
+
 class Table:
+    """Creates Table objects"""
 
-     def __init__(self, name, attrs):
+    def __init__(self, name, attrs):
 
-          self.name = name
-          self.attrs = attrs
+        self.name = name
+        self.attrs = attrs
 
-     def create_table(self):
+    def create_table(self):
+        # creates a table takes the name and attributes as arguments
 
-          dbcursor.execute("USE pur_beurre;")
-          dbcursor.execute("CREATE TABLE IF NOT EXISTS {}({})".format(self.name, self.attrs))
+        dbcursor.execute("USE pur_beurre;")
+        dbcursor.execute(
+            "CREATE TABLE IF NOT EXISTS {}({})".format(self.name, self.attrs)
+        )
+
 
 class Database:
+    """Creates the database and works with the
+    table class object to create the table within it"""
 
-     def __init__(self, products):
-          self.products = products
-          dbcursor.execute("CREATE DATABASE IF NOT EXISTS pur_beurre CHARACTER SET 'utf8';")
+    def __init__(self, products):
 
-     """Main fonctions to execute, create database and then the tables"""
-     def main_database(self): #RANGA metttre dans une classe
-          products_table_attrs = "id BIGINT UNSIGNED NOT NULL, name VARCHAR(255) NOT NULL, nutriscore VARCHAR(1) NOT NULL, ingredients TEXT, url VARCHAR(255) NOT NULL, PRIMARY KEY(id) "
+        self.products = products
+        dbcursor.execute(
+            "CREATE DATABASE IF NOT EXISTS pur_beurre CHARACTER SET 'utf8';"
+        )
+        # creates the datase
 
-          products_table = Table("Products", products_table_attrs)
-          
-          product_categories_table_attrs = "id INT PRIMARY KEY AUTO_INCREMENT, idproduct BIGINT UNSIGNED NOT NULL, idcategory INT NOT NULL, FOREIGN KEY (idproduct) REFERENCES Products (id), FOREIGN KEY (idcategory) REFERENCES Categories (id)"
+    def main_database(self):
+        # Main fonction to execute, to create database and tables
 
-          product_categories_table = Table("Product_Categories", product_categories_table_attrs)
-          
-          categories_table_attrs = "id INT NOT NULL AUTO_INCREMENT, name VARCHAR(100) NOT NULL UNIQUE, PRIMARY KEY(id)"
-          categories_table = Table("Categories", categories_table_attrs)
+        products_table_attrs = "id BIGINT UNSIGNED NOT NULL, "
+        "name VARCHAR(255) NOT NULL, "
+        "nutriscore VARCHAR(1) NOT NULL, "
+        "ingredients TEXT, "
+        "url VARCHAR(255) NOT NULL, "
+        "PRIMARY KEY(id) "
 
-          stores_table_attrs = "id INT NOT NULL AUTO_INCREMENT, name VARCHAR(100) NOT NULL UNIQUE, PRIMARY KEY(id)"
-          stores_table = Table("Stores", stores_table_attrs)
+        products_table = Table("Products", products_table_attrs)
 
-          product_stores_table_attrs = "id INT PRIMARY KEY AUTO_INCREMENT, idproduct BIGINT UNSIGNED NOT NULL, idstore INT, FOREIGN KEY (idproduct) REFERENCES Products (id), FOREIGN KEY (idstore) REFERENCES Stores (id)"
-          product_stores_table = Table("Product_Stores", product_stores_table_attrs)
+        product_categories_table_attrs = "id INT PRIMARY KEY AUTO_INCREMENT, "
+        "idproduct BIGINT UNSIGNED NOT NULL, "
+        "idcategory INT NOT NULL, "
+        "FOREIGN KEY (idproduct) REFERENCES Products (id), "
+        "FOREIGN KEY (idcategory) REFERENCES Categories (id)"
 
-          favorites_table_attrs  = "id SMALLINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(100) NOT NULL, id_product BIGINT UNSIGNED NOT NULL, FOREIGN KEY (id_product) REFERENCES Products (id)"
-          favorites_table = Table("Favorites", favorites_table_attrs)
+        product_categories_table = Table(
+            "Product_Categories", product_categories_table_attrs
+        )
 
+        categories_table_attrs = "id INT NOT NULL AUTO_INCREMENT, "
+        "name VARCHAR(100) NOT NULL UNIQUE, PRIMARY KEY(id)"
+        categories_table = Table("Categories", categories_table_attrs)
 
-          products_table.create_table()
-          categories_table.create_table()
-          product_categories_table.create_table()
-          stores_table.create_table()
-          product_stores_table.create_table()
-          favorites_table.create_table()
+        stores_table_attrs = "id INT NOT NULL AUTO_INCREMENT, "
+        "name VARCHAR(100) NOT NULL UNIQUE, PRIMARY KEY(id)"
+        stores_table = Table("Stores", stores_table_attrs)
 
-     def delete_doubles(self):
+        product_stores_table_attrs = "id INT PRIMARY KEY AUTO_INCREMENT, "
+        "idproduct BIGINT UNSIGNED NOT NULL, "
+        "idstore INT, "
+        "FOREIGN KEY (idproduct) REFERENCES Products (id), "
+        "FOREIGN KEY (idstore) REFERENCES Stores (id)"
+        product_stores_table = Table(
+            "Product_Stores",
+            product_stores_table_attrs
+            )
 
-          dbcursor.execute("USE pur_beurre;")
-          dbcursor.execute(
-               "DELETE product_categories FROM product_categories "
-               "LEFT OUTER JOIN ( "
-               "SELECT MIN(id) as id, idproduct, idcategory "
-               "FROM product_categories "
-               "GROUP BY idproduct, idcategory "
-               ") as t1 " 
-               "ON product_categories.id = t1.id "
-               "WHERE t1.id IS NULL;"
-          )
+        favorites_table_attrs = "id SMALLINT PRIMARY KEY AUTO_INCREMENT, "
+        "id_product BIGINT UNSIGNED NOT NULL, "
+        "FOREIGN KEY (id_product) REFERENCES Products (id)"
+        favorites_table = Table("Favorites", favorites_table_attrs)
 
+        products_table.create_table()
+        categories_table.create_table()
+        product_categories_table.create_table()
+        stores_table.create_table()
+        product_stores_table.create_table()
+        favorites_table.create_table()
 
+    def delete_doubles(self):
+        # This method deletes the doubles which
+        # can occur in the product_categories table
 
-     def database_constructor(self):
-          
-         self.main_database()
-         product_manager = ProductManager(self.products)
-         product_manager.save()
-         CategoryManager(self.products).save()
-         TableInserter(self.products).insert()
-         self.delete_doubles()
-         return product_manager
-        
+        dbcursor.execute("USE pur_beurre;")
+        dbcursor.execute(
+            "DELETE product_categories FROM product_categories "
+            "LEFT OUTER JOIN ( "
+            "SELECT MIN(id) as id, idproduct, idcategory "
+            "FROM product_categories "
+            "GROUP BY idproduct, idcategory "
+            ") as t1 "
+            "ON product_categories.id = t1.id "
+            "WHERE t1.id IS NULL;"
+        )
+
+    def database_constructor(self):
+        # Builds the database
+
+        self.main_database()
+        product_manager = ProductManager(self.products)
+        product_manager.save()
+        CategoryManager(self.products).save()
+        TableInserter(self.products).insert()
+        self.delete_doubles()
+        return product_manager

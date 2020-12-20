@@ -1,17 +1,17 @@
-"""This file contains everything related to the stores"""
+"""This file contains everything related to the stores
 
-from product import productlist
+import product
 from mysql_connector import dbcursor, db_pur_beurre
 
 class Store:
-    """"Create an object stores with an id and a name as attributes"""
+    Create an object stores with an id and a name as attributes
 
     def __init__(self, name):
 
         self.id = 0
         self.name = name
 
-    
+
     def get_names(self):
         #get the names for the stores
 
@@ -27,7 +27,7 @@ store = Store("name")
 #print(store.get_names())
 
 class StoreManager:
-    """Methods to execute on category objects"""
+    Methods to execute on category objects
 
     def __init__(self, store):
 
@@ -39,10 +39,11 @@ class StoreManager:
         stores = self.store.get_names()
 
         dbcursor.execute("USE pur_beurre;")
-        command = "INSERT IGNORE INTO Stores (id, name) VALUES (NULL, %(name)s);"
+        command = "INSERT IGNORE INTO "
+        "Stores (id, name) VALUES (NULL, %(name)s);"
         for name in stores:
             dbcursor.execute(command,{'name': name.strip()})
         db_pur_beurre.commit()
 
 storemanager = StoreManager(store)
-storemanager.save()
+storemanager.save()"""
