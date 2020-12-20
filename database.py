@@ -19,7 +19,9 @@ class Table:
 
         dbcursor.execute("USE pur_beurre;")
         dbcursor.execute(
-            "CREATE TABLE IF NOT EXISTS {}({})".format(self.name, self.attrs)
+            "CREATE TABLE IF NOT EXISTS %(name)s(%(name)s);",
+            {"name":self.name},
+            {"name":self.attrs}
         )
 
 
@@ -30,9 +32,7 @@ class Database:
     def __init__(self, products):
 
         self.products = products
-        dbcursor.execute(
-            "CREATE DATABASE IF NOT EXISTS pur_beurre CHARACTER SET 'utf8';"
-        )
+        dbcursor.execute("CREATE DATABASE IF NOT EXISTS pur_beurre CHARACTER SET 'utf8';")
         # creates the datase
 
     def main_database(self):
@@ -43,7 +43,7 @@ class Database:
         "nutriscore VARCHAR(1) NOT NULL, "
         "ingredients TEXT, "
         "url VARCHAR(255) NOT NULL, "
-        "PRIMARY KEY(id) "
+        "PRIMARY KEY(id)"
 
         products_table = Table("Products", products_table_attrs)
 
@@ -71,8 +71,7 @@ class Database:
         "FOREIGN KEY (idproduct) REFERENCES Products (id), "
         "FOREIGN KEY (idstore) REFERENCES Stores (id)"
         product_stores_table = Table(
-            "Product_Stores",
-            product_stores_table_attrs
+            "Product_Stores", product_stores_table_attrs
             )
 
         favorites_table_attrs = "id SMALLINT PRIMARY KEY AUTO_INCREMENT, "
@@ -100,7 +99,7 @@ class Database:
             "GROUP BY idproduct, idcategory "
             ") as t1 "
             "ON product_categories.id = t1.id "
-            "WHERE t1.id IS NULL;"
+            "WHERE t1.id IS NULL"
         )
 
     def database_constructor(self):
