@@ -9,6 +9,11 @@ plus saine aux produits consommation quotidienne.
 
 1. Installation
 
+Installez python, vous pouvez le télécharger ici : https://www.python.org/downloads/
+(faites attention à prendre la version correspondant à votre OS)
+
+Installez mysql, vous pouvez le télécharger ici : https://mysql-com.en.softonic.com/download
+
 Option 1
 
 Téléchargez les documents du repositoire Code > Download ZIP puis décompressez le fichier ZIP.
@@ -21,6 +26,9 @@ Depuis votre terminal Gitbash créez un dossier à l'aide de la commande "mkdir 
 puis téléchargez les fichiers de l'application "git clone https://github.com/Heightsdesign/pur_beurre.git".
 Rendez vous dans le "pur_beurre" et lancez la commande "pip install -r requirements.txt" 
 afin d'installer tout les modules et librairies nécessaires au bon fonctionnement de l'application.
+
+Allez dans le dossier "connexion" et ouverz le fichier "mysql_connector.py" avec votre éditeur de texte 
+favoris et modifiez les paramètres host, user and passwd si nécéssaire.
 
 2. Lancement de l'application
 

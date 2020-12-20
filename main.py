@@ -12,7 +12,7 @@ def main():
     product_parser = ProductParser().parser()
     product_manager = Database(product_parser).database_constructor()
     UserInterface().run_user_interface()
-    # lancer l'application
+    # launch application
 
 
 if __name__ == "__main__":

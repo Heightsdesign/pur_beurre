@@ -1,0 +1,51 @@
+/* Script de création de la base de données pour l'application Pur Beurre*/
+
+CREATE DATABASE IF NOT EXISTS pur_beurre CHARACTER SET 'utf8';
+
+CREATE TABLE IF NOT EXISTS Products
+(
+id BIGINT UNSIGNED NOT NULL, 
+name VARCHAR(255) NOT NULL, 
+nutriscore VARCHAR(1) NOT NULL, 
+ingredients TEXT, 
+url VARCHAR(255) 
+NOT NULL, 
+PRIMARY KEY(id) 
+);
+
+CREATE TABLE IF NOT EXISTS Product_categories
+(
+id INT PRIMARY KEY AUTO_INCREMENT, 
+idproduct BIGINT UNSIGNED NOT NULL, 
+idcategory INT NOT NULL, 
+FOREIGN KEY (idproduct) REFERENCES Products (id), 
+FOREIGN KEY (idcategory) REFERENCES Categories (id) 
+);
+
+
+CREATE TABLE IF NOT EXISTS Categories
+(
+id INT NOT NULL AUTO_INCREMENT, 
+name VARCHAR(100) NOT NULL UNIQUE, 
+PRIMARY KEY(id)
+);
+CREATE TABLE IF NOT EXISTS Favorites 
+(
+id SMALLINT PRIMARY KEY AUTO_INCREMENT, 
+id_product BIGINT UNSIGNED NOT NULL, 
+FOREIGN KEY (id_product) REFERENCES Products (id) 
+);
+
+CREATE TABLE IF NOT EXISTS Stores
+(
+id INT NOT NULL AUTO_INCREMENT, 
+name VARCHAR(100) NOT NULL UNIQUE, 
+PRIMARY KEY(id) 
+);
+
+CREATE TABLE IF NOT EXISTS Product_stores
+(
+id SMALLINT PRIMARY KEY AUTO_INCREMENT, 
+id_product BIGINT UNSIGNED NOT NULL, 
+FOREIGN KEY (id_product) REFERENCES Products (id) 
+);
