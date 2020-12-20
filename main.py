@@ -10,7 +10,7 @@ def main():
         "vos aliments favoris par des alternatives plus saines. >>>\n"
     )
     product_parser = ProductParser().parser()
-    Database(product_parser).database_constructor()
+    product_manager = Database(product_parser).database_constructor()
     UserInterface().run_user_interface()
     # lancer l'application
 
